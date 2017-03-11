@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let parseConfig = ParseClientConfiguration { (ParseMutableClientConfiguration) in
+            
+            //access to Heroku App via ID & keys
+            ParseMutableClientConfiguration.applicationId = "photosharingncku5058"
+            ParseMutableClientConfiguration.clientKey = "photosharingncku5051"
+            ParseMutableClientConfiguration.server = "http://learnphotosharing.herokuapp.com/parse"
+        }
+        
+        Parse.initialize(with: parseConfig)
+        
+        //Add Fake User
+        PFUser.logInWithUsername(inBackground: "test", password: "test5058")
+        if let currenUser = PFUser.current() {
+            print("\(currenUser.username) logged in successfully")
+        } else {
+            print("No logged in user :(")
+        }
+        
+        //setup ACL security
+        let acl = PFACL()
+        acl.getPublicReadAccess = true
+        PFACL.setDefault(acl, withAccessForCurrentUser: true)
+        
         return true
     }
 
