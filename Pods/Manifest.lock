@@ -3,6 +3,7 @@ PODS:
   - Bond (6.0.2):
     - Diff (~> 0.4)
     - ReactiveKit (~> 3.3)
+  - ConvenienceKit (0.4.0)
   - Diff (0.5.0)
   - Parse (1.14.2):
     - Bolts/Tasks (~> 1.8)
@@ -10,15 +11,17 @@ PODS:
 
 DEPENDENCIES:
   - Bond (~> 6.0)
+  - ConvenienceKit
   - Parse
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   Bond: f4a49ab1bd7e84ffc5178364219f689551e18a01
+  ConvenienceKit: ba1ad8797897dc0d011676e961a2f3e9b270c841
   Diff: eceb93a3adf508574ba9b8560da185ace83de055
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ReactiveKit: 27df79c2e2f0771aef1061551fcd7e82b92066e9
 
-PODFILE CHECKSUM: a8bd0cbbb28de190a319bffe267f05a531f4e5cc
+PODFILE CHECKSUM: 5d769617206edfd409849657510d19bfe4da476c
 
 COCOAPODS: 1.2.0

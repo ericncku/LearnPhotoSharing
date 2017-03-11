@@ -78,7 +78,7 @@ class Post: PFObject, PFSubclassing {
     func fetchLikes() {
         if likes.value == nil {
             
-            ParseHelper.likesForPost(post: self, completionBlock: { (results:[PFObject]?, error:Error?) in
+            ParseHelper.likesForPost(self, completionBlock: { (results:[PFObject]?, error:Error?) in
                 let likes = results?.filter { like in like[ParseHelper.LikeFromUser] != nil }
                 
                 self.likes.value = likes?.map { like in
@@ -91,7 +91,7 @@ class Post: PFObject, PFSubclassing {
         }
     }
     
-    func doesUserLikePost(user: PFUser) -> Bool {
+    func doesUserLikePost(_ user: PFUser) -> Bool {
         
         if let likes = likes.value {
             return likes.contains(user)
@@ -100,14 +100,14 @@ class Post: PFObject, PFSubclassing {
         }
     }
     
-    func toggleLikePost(user: PFUser) {
+    func toggleLikePost(_ user: PFUser) {
         
-        if doesUserLikePost(user: user) {
+        if doesUserLikePost(user) {
             likes.value = likes.value?.filter { $0 != user }
-            ParseHelper.unlikePost(user: user, post: self)
+            ParseHelper.unlikePost(user, post: self)
         } else {
             likes.value?.append(user)
-            ParseHelper.likePost(user: user, post: self)
+            ParseHelper.likePost(user, post: self)
         }
     }
     

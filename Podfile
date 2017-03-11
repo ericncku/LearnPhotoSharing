@@ -8,4 +8,5 @@ target 'photoSharing' do
   # Pods for photoSharing
   pod 'Parse'
   pod 'Bond', '~> 6.0'
+  pod 'ConvenienceKit'
 end

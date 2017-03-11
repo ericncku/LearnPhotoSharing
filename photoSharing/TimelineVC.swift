@@ -10,18 +10,26 @@ import UIKit
 import Parse
 import ConvenienceKit
 
-class TimelineVC: UIViewController, UITabBarControllerDelegate, UITableViewDataSource {
+class TimelineVC: UIViewController, UITabBarControllerDelegate, UITableViewDataSource, TimelineComponentTarget, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
     var photoTakingHelper: PhotoTakingHelper?
     var posts:[Post] = []
     
+    var timelineComponent: TimelineComponent<Post, TableView>!
+    let defaultRange = 0...4
+    let additionalRangeSize = 5
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //set timelineVC is the delegate of tabBarController
         self.tabBarController?.delegate = self
+        
+        //use timelinecomponent
+        timelineComponent = TimelineComponent(target: self)
         
     }
     
@@ -35,14 +43,14 @@ class TimelineVC: UIViewController, UITabBarControllerDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
+        return timelineComponent.content.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as! PostCell
         
-        let post = posts[indexPath.row]
+        let post = timelineComponent.content[indexPath.row]
         post.imageDownload()
         post.fetchLikes()
         cell.post = post
@@ -52,6 +60,9 @@ class TimelineVC: UIViewController, UITabBarControllerDelegate, UITableViewDataS
         return cell
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        timelineComponent.targetWillDisplayEntry(indexPath.row)
+    }
     
     func takePhoto() {
         
@@ -72,11 +83,21 @@ class TimelineVC: UIViewController, UITabBarControllerDelegate, UITableViewDataS
         super.viewDidAppear(true)
         
         //fetch posts from server
-        ParseHelper.timelineRequestForCurrentUser { (result: [PFObject]?, erro:Error?) in
-            self.posts = result as? [Post] ?? []
-            
-            //after finish download all of the post and data, reload tableview
-            self.tableView.reloadData()
+//        ParseHelper.timelineRequestForCurrentUser { (result: [PFObject]?, erro:Error?) in
+//            self.posts = result as? [Post] ?? []
+//            
+//            //after finish download all of the post and data, reload tableview
+//            self.tableView.reloadData()
+//        }
+        timelineComponent.loadInitialIfRequired()
+    }
+    
+    func loadInRange(range: CountableRange<Int>, completionBlock: @escaping ([Post]?) -> ()) {
+        // 1
+        ParseHelper.timelineRequestForCurrentUser(range: range) { (result:[PFObject]?, error:Error?) in
+            let posts = result as? [Post] ?? []
+            // 3
+            completionBlock(posts)
         }
     }
     

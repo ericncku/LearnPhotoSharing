@@ -50,8 +50,9 @@ class PostCell: UITableViewCell {
             }
         }
     }
+    
     @IBAction func likeBtnTap(_ sender: Any) {
-        post?.toggleLikePost(user: PFUser.current()!)
+        post?.toggleLikePost(PFUser.current()!)
     }
     
     @IBAction func moreBtnTap(_ sender: Any) {

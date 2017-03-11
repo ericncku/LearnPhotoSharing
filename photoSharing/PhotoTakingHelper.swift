@@ -38,14 +38,14 @@ class PhotoTakingHelper: NSObject {
         
         //add photo library action
         let photoLibraryAction = UIAlertAction(title: "Photo From Library", style: .default) { (action) in
-            self.showImagePickerController(sourceType: .photoLibrary)
+            self.showImagePickerController(.photoLibrary)
         }
         alertController.addAction(photoLibraryAction)
         
         //add camer action
         if UIImagePickerController.isCameraDeviceAvailable(.rear) {
             let cameraAction = UIAlertAction(title: "Photo From Camera", style: .default, handler: { (action) in
-                self.showImagePickerController(sourceType: .camera)
+                self.showImagePickerController(.camera)
             })
             alertController.addAction(cameraAction)
         }
@@ -54,7 +54,7 @@ class PhotoTakingHelper: NSObject {
     }
     
     //show imagePicker controller
-    func showImagePickerController(sourceType: UIImagePickerControllerSourceType) {
+    func showImagePickerController(_ sourceType: UIImagePickerControllerSourceType) {
         imagePickerController = UIImagePickerController()
         imagePickerController!.sourceType = sourceType
         imagePickerController!.delegate = self

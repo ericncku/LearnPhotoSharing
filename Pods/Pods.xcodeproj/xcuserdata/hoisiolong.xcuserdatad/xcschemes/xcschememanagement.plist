@@ -14,6 +14,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ConvenienceKit-ConvenienceKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ConvenienceKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Diff.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,7 +67,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AE9905BB91F8247A265204A4E01D1046</key>
+		<key>8CB82792FE7756E1A1D5E6B850878396</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A2EA221776DEBB33B15C0946254D7A37</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F5CCA6195A055DD323FED1848D2E9F54</key>
 		<dict>
 			<key>primary</key>
 			<true/>

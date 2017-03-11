@@ -36,7 +36,7 @@ class ParseHelper: PFObject {
     static let ParseUserUsername      = "username"
     
     // MARK: Timeline
-    static func timelineRequestForCurrentUser(completionBlock: @escaping completedParseBlock) {
+    static func timelineRequestForCurrentUser(range: CountableRange<Int>, completionBlock: @escaping completedParseBlock) {
         //fetch posts from server
         let followingQuery = PFQuery(className: FollowClass)
         followingQuery.whereKey(FollowFromUser, equalTo: PFUser.current()!)
@@ -50,11 +50,16 @@ class ParseHelper: PFObject {
         let query = PFQuery.orQuery(withSubqueries: [postsFromFollowedUsers!, postsFromThisUser!])
         query.includeKey(PostUser)
         query.order(byDescending: "createdAt")
+        
+        //add pagation
+        query.skip = range.startIndex
+        query.limit = range.endIndex - range.startIndex
+        
         query.findObjectsInBackground(block: completionBlock)
     }
     
     // MARK: Likes
-    static func likePost(user: PFUser, post: Post) {
+    static func likePost(_ user: PFUser, post: Post) {
         let likeObject = PFObject(className: LikeClass)
         likeObject[LikeFromUser] = user
         likeObject[LikeToPost] = post
@@ -62,7 +67,7 @@ class ParseHelper: PFObject {
         
     }
     
-    static func unlikePost(user: PFUser, post: Post) {
+    static func unlikePost(_ user: PFUser, post: Post) {
         //step1: fetch from user to find the user is like it or not
         let query = PFQuery(className: LikeClass)
         query.whereKey(LikeFromUser, equalTo: user)
@@ -76,7 +81,7 @@ class ParseHelper: PFObject {
         }
     }
     
-    static func likesForPost(post: Post, completionBlock: @escaping completedParseBlock) {
+    static func likesForPost(_ post: Post, completionBlock: @escaping completedParseBlock) {
         let query = PFQuery(className: LikeClass)
         query.whereKey(LikeToPost, equalTo: post)
         query.includeKey(LikeFromUser)
@@ -84,7 +89,7 @@ class ParseHelper: PFObject {
     }
     
     //MARK: add equal objectId return true
-    public func isEqual(object: AnyObject?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         if (object as? PFObject)?.objectId == self.objectId {
             return true
         } else {
